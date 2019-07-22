@@ -22,7 +22,7 @@
 //variables
 OneWire  ds(PIN_ONE_WIRE);
 RF24 radio(17,10); 
-byte addresses[][6] = {"1Node"};
+byte addresses[][6] = {"LNX13"};
 enum session_enum {IN_SESSION, OUT_SESSION};
 enum state_enum {CHECK_SENSORS, SEND_DATA};
 struct sensors_data {
