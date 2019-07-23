@@ -100,7 +100,12 @@ void checkSensors() {
   SET_PIN(PIN_SENSOR_ENABLE);
   SET_PIN(PIN_COLD_COUNTER); //pull-up enable
   SET_PIN(PIN_HOT_COUNTER); //pull-up enable
-  delayMicroseconds(800);
+  if(data.voltage < 3400)         // <3.4V
+    delayMicroseconds(1200);      // real 1.6ms
+   else if (data.voltage < 3900)  // 3.4-3.9V  
+    delayMicroseconds(700);       // real 1.2ms
+   else                           // >3.9V
+    delayMicroseconds(500);       // real 1ms
   hot_tmp = digitalReadFast(PIN_HOT_COUNTER);
   cold_tmp = digitalReadFast(PIN_COLD_COUNTER);
   CLR_PIN(PIN_SENSOR_ENABLE); //turnoff led
@@ -209,6 +214,8 @@ void setup() {
   ds.write(0);
   //ds.write(0x1f); //9-bit resolution
   ds.write(0x3f); //10-bit resolution
+
+  data.voltage=readVcc();
   
 }
 
