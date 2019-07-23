@@ -199,6 +199,7 @@ void setup() {
   radio.setDataRate(RF24_250KBPS);  
   radio.openWritingPipe(addresses[0]);
   radio.stopListening();
+  radio.powerDown();
   
   // put your setup code here, to run once:
   pinMode(LED_BUILTIN, OUTPUT);
@@ -227,7 +228,9 @@ void loop() {
     case SEND_DATA:
       data.voltage=readVcc();
       data.temp = getTemp();
+      radio.powerUp();
       radio.write(&data, sizeof(sensors_data));
+      radio.powerDown();
       state = CHECK_SENSORS;
     
     case CHECK_SENSORS:
@@ -236,4 +239,5 @@ void loop() {
     }
 
   LowPower.powerDown(SLEEP_250MS, ADC_OFF, BOD_OFF);  
+  //LowPower.powerDown(SLEEP_FOREVER, ADC_OFF, BOD_OFF);
 }
